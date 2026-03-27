@@ -1,29 +1,60 @@
 import PropTypes from "prop-types";
 import { Handle, Position } from "reactflow";
+import { LAYER_REGISTRY } from "@/constants/LayerRegistry";
+import Tooltip from "@/components/ui/tooltip-simple";
 
-function ConvNode({ data, id }) {
-  const p = data.params;
-  const parts = [
-    p.filter ? `F: ${p.filter}` : null,
-    p.kernelX && p.kernelY ? `K: ${p.kernelX}×${p.kernelY}` : null,
-    p.strideX && p.strideY ? `S: ${p.strideX}×${p.strideY}` : null,
-    p.padding ? `P: ${p.padding}` : null,
-    p.activation && p.activation !== "none" ? `Act: ${p.activation}` : null,
-  ]
-    .filter(Boolean)
-    .join(", ");
+const ConvNode = ({ data, selected }) => {
+  const { params } = data;
+  const registryEntry = LAYER_REGISTRY.customconv;
 
   return (
-    <div className="w-48 rounded-lg border bg-white shadow-sm">
-      <Handle type="target" position={Position.Left} isConnectable id={`${id}_in`} />
-      <div className="rounded-t-lg bg-node-conv px-3 py-1.5 text-xs font-bold text-white">
-        Conv2D
+    <Tooltip content={registryEntry.description}>
+      <div
+        className={`w-32 rounded-md border-2 bg-white px-2 py-3 shadow-md transition-all ${
+          selected ? "border-primary ring-2 ring-primary/20" : "border-node-conv"
+        }`}
+      >
+        <Handle
+          type="target"
+          position={Position.Top}
+          className="h-2 w-2 !bg-node-conv"
+        />
+        <div className="mb-2 border-b pb-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+          Conv2D Layer
+        </div>
+        <div className="flex flex-col gap-1 text-[10px]">
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">Filters:</span>
+            <span className="font-mono font-medium">{params.filter}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">Kernel:</span>
+            <span className="font-mono font-medium">
+              {params.kernelX}x{params.kernelY}
+            </span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">Padding:</span>
+            <span className="font-mono font-medium lowercase italic">
+              {params.padding}
+            </span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">Act:</span>
+            <span className="font-mono font-medium lowercase italic">
+              {params.activation}
+            </span>
+          </div>
+        </div>
+        <Handle
+          type="source"
+          position={Position.Bottom}
+          className="h-2 w-2 !bg-node-conv"
+        />
       </div>
-      <div className="px-3 py-2 text-xs text-muted-foreground">{parts || "Not configured"}</div>
-      <Handle type="source" position={Position.Right} isConnectable id={`${id}_out`} />
-    </div>
+    </Tooltip>
   );
-}
+};
 
 ConvNode.propTypes = {
   data: PropTypes.shape({

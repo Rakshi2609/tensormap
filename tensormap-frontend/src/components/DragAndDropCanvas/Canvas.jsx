@@ -30,6 +30,7 @@ import DenseNode from "./CustomNodes/DenseNode/DenseNode";
 import FlattenNode from "./CustomNodes/FlattenNode/FlattenNode";
 import ConvNode from "./CustomNodes/ConvNode/ConvNode";
 import DropoutNode from "./CustomNodes/DropoutNode/DropoutNode";
+import { LAYER_REGISTRY } from "@/constants/LayerRegistry";
 import Sidebar from "./Sidebar";
 import NodePropertiesPanel from "./NodePropertiesPanel";
 import { canSaveModel, generateModelJSON } from "./Helpers";
@@ -508,21 +509,13 @@ function Canvas() {
         y: event.clientY - reactFlowBounds.top,
       });
 
-      const defaultParams = {
-        custominput: { "dim-1": "", "dim-2": "", "dim-3": "" },
-        customdense: { units: "", activation: "" },
-        customflatten: {},
-        customconv: {
-          filter: "",
-          padding: "valid",
-          activation: "none",
-          strideX: "",
-          strideY: "",
-          kernelX: "",
-          kernelY: "",
-        },
-        customdropout: { rate: "" },
-      };
+      const registryEntry = LAYER_REGISTRY[type];
+      if (!registryEntry) return;
+
+      const defaultParams = {};
+      Object.entries(registryEntry.params).forEach(([key, field]) => {
+        defaultParams[key] = field.default !== undefined ? field.default : "";
+      });
 
       const newNode = {
         id: crypto.randomUUID(),
