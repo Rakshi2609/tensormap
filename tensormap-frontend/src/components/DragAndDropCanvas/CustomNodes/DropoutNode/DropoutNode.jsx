@@ -1,21 +1,42 @@
 import PropTypes from "prop-types";
 import { Handle, Position } from "reactflow";
+import { LAYER_REGISTRY } from "@/constants/LayerRegistry";
+import Tooltip from "@/components/ui/tooltip-simple";
 
-function DropoutNode({ data, id }) {
-  const { rate } = data.params;
+const DropoutNode = ({ data, selected }) => {
+  const { params } = data;
+  const registryEntry = LAYER_REGISTRY.customdropout;
+
   return (
-    <div className="w-44 rounded-lg border bg-white shadow-sm">
-      <Handle type="target" position={Position.Left} isConnectable id={`${id}_in`} />
-      <div className="rounded-t-lg bg-node-dropout px-3 py-1.5 text-xs font-bold text-white">
-        Dropout
+    <Tooltip content={registryEntry.description}>
+      <div
+        className={`w-32 rounded-md border-2 bg-white px-2 py-3 shadow-md transition-all ${
+          selected ? "border-primary ring-2 ring-primary/20" : "border-node-dropout"
+        }`}
+      >
+        <Handle
+          type="target"
+          position={Position.Top}
+          className="h-2 w-2 !bg-node-dropout"
+        />
+        <div className="mb-2 border-b pb-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+          Dropout
+        </div>
+        <div className="flex flex-col gap-1 text-[10px]">
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">Rate:</span>
+            <span className="font-mono font-medium">{params.rate}</span>
+          </div>
+        </div>
+        <Handle
+          type="source"
+          position={Position.Bottom}
+          className="h-2 w-2 !bg-node-dropout"
+        />
       </div>
-      <div className="px-3 py-2 text-xs text-muted-foreground">
-        {rate !== "" && rate !== undefined ? `Rate: ${rate}` : "Not configured"}
-      </div>
-      <Handle type="source" position={Position.Right} isConnectable id={`${id}_out`} />
-    </div>
+    </Tooltip>
   );
-}
+};
 
 DropoutNode.propTypes = {
   data: PropTypes.shape({
@@ -23,7 +44,6 @@ DropoutNode.propTypes = {
       rate: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     }).isRequired,
   }).isRequired,
-  id: PropTypes.string.isRequired,
 };
 
 export default DropoutNode;
