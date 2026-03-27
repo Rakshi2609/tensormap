@@ -24,7 +24,7 @@
     "tailwind-merge": "^3.5.0"
   },
   "scripts": {
-    "start": "vite --host 0.0.0.0",
+    "start": "node api.js && vite --host 0.0.0.0",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
