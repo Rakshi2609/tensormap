@@ -424,6 +424,18 @@ function Canvas() {
     [setNodes, takeSnapshotAndUpdate],
   );
 
+  const onNodeDelete = useCallback(
+    (nodeId) => {
+      takeSnapshotAndUpdate(nodesRef.current, edgesRef.current);
+      setNodes((nds) => nds.filter((node) => node.id !== nodeId));
+      setEdges((eds) => eds.filter((edge) => edge.source !== nodeId && edge.target !== nodeId));
+      if (selectedNodeId === nodeId) {
+        setSelectedNodeId(null);
+      }
+    },
+    [setNodes, setEdges, takeSnapshotAndUpdate, selectedNodeId],
+  );
+
   const closeFeedback = () => {
     setFeedbackDialog((prev) => ({ ...prev, open: false }));
   };
@@ -654,6 +666,7 @@ function Canvas() {
               onSave={modelSaveHandler}
               canSave={canSaveModel(modelName, modelData)}
               onNodeUpdate={onNodeUpdate}
+              onNodeDelete={onNodeDelete}
             />
           </div>
         </ReactFlowProvider>
