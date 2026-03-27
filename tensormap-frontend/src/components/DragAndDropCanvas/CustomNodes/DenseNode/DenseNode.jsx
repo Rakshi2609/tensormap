@@ -1,23 +1,48 @@
 import PropTypes from "prop-types";
 import { Handle, Position } from "reactflow";
+import { LAYER_REGISTRY } from "@/constants/LayerRegistry";
+import Tooltip from "@/components/ui/tooltip-simple";
 
-function DenseNode({ data, id }) {
-  const { units, activation } = data.params;
-  const summary = [units ? `Units: ${units}` : null, activation ? `Act: ${activation}` : null]
-    .filter(Boolean)
-    .join(", ");
+const DenseNode = ({ data, selected }) => {
+  const { params } = data;
+  const registryEntry = LAYER_REGISTRY.customdense;
 
   return (
-    <div className="w-44 rounded-lg border bg-white shadow-sm">
-      <Handle type="target" position={Position.Left} isConnectable id={`${id}_in`} />
-      <div className="rounded-t-lg bg-node-dense px-3 py-1.5 text-xs font-bold text-white">
-        Dense
+    <Tooltip content={registryEntry.description}>
+      <div
+        className={`w-32 rounded-md border-2 bg-white px-2 py-3 shadow-md transition-all ${
+          selected ? "border-primary ring-2 ring-primary/20" : "border-node-dense"
+        }`}
+      >
+        <Handle
+          type="target"
+          position={Position.Top}
+          className="h-2 w-2 !bg-node-dense"
+        />
+        <div className="mb-2 border-b pb-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+          Dense Layer
+        </div>
+        <div className="flex flex-col gap-1 text-[10px]">
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">Units:</span>
+            <span className="font-mono font-medium">{params.units}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">Act:</span>
+            <span className="font-mono font-medium lowercase italic">
+              {params.activation}
+            </span>
+          </div>
+        </div>
+        <Handle
+          type="source"
+          position={Position.Bottom}
+          className="h-2 w-2 !bg-node-dense"
+        />
       </div>
-      <div className="px-3 py-2 text-xs text-muted-foreground">{summary || "Not configured"}</div>
-      <Handle type="source" position={Position.Right} isConnectable id={`${id}_out`} />
-    </div>
+    </Tooltip>
   );
-}
+};
 
 DenseNode.propTypes = {
   data: PropTypes.shape({
