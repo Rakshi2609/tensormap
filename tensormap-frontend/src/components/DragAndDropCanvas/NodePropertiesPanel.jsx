@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Trash2 } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -33,6 +34,7 @@ function NodePropertiesPanel({
   onSave,
   canSave,
   onNodeUpdate,
+  onNodeDelete,
 }) {
   if (!selectedNode) {
     return (
@@ -102,6 +104,17 @@ function NodePropertiesPanel({
             />
           </div>
         </CardContent>
+        <CardFooter className="border-t bg-muted/50 p-3">
+          <Button
+            variant="destructive"
+            size="sm"
+            className="w-full"
+            onClick={() => onNodeDelete(id)}
+          >
+            <Trash2 className="mr-2 h-4 w-4" />
+            Delete Layer
+          </Button>
+        </CardFooter>
       </Card>
     );
   }
@@ -139,6 +152,17 @@ function NodePropertiesPanel({
             </Select>
           </div>
         </CardContent>
+        <CardFooter className="border-t bg-muted/50 p-3">
+          <Button
+            variant="destructive"
+            size="sm"
+            className="w-full"
+            onClick={() => onNodeDelete(id)}
+          >
+            <Trash2 className="mr-2 h-4 w-4" />
+            Delete Layer
+          </Button>
+        </CardFooter>
       </Card>
     );
   }
@@ -152,6 +176,17 @@ function NodePropertiesPanel({
         <CardContent>
           <p className="text-sm text-muted-foreground">No configurable parameters</p>
         </CardContent>
+        <CardFooter className="border-t bg-muted/50 p-3">
+          <Button
+            variant="destructive"
+            size="sm"
+            className="w-full"
+            onClick={() => onNodeDelete(id)}
+          >
+            <Trash2 className="mr-2 h-4 w-4" />
+            Delete Layer
+          </Button>
+        </CardFooter>
       </Card>
     );
   }
@@ -244,6 +279,17 @@ function NodePropertiesPanel({
             </Select>
           </div>
         </CardContent>
+        <CardFooter className="border-t bg-muted/50 p-3">
+          <Button
+            variant="destructive"
+            size="sm"
+            className="w-full"
+            onClick={() => onNodeDelete(id)}
+          >
+            <Trash2 className="mr-2 h-4 w-4" />
+            Delete Layer
+          </Button>
+        </CardFooter>
       </Card>
     );
   }
@@ -267,6 +313,17 @@ function NodePropertiesPanel({
             />
           </div>
         </CardContent>
+        <CardFooter className="border-t bg-muted/50 p-3">
+          <Button
+            variant="destructive"
+            size="sm"
+            className="w-full"
+            onClick={() => onNodeDelete(id)}
+          >
+            <Trash2 className="mr-2 h-4 w-4" />
+            Delete Layer
+          </Button>
+        </CardFooter>
       </Card>
     );
   }
@@ -280,6 +337,7 @@ NodePropertiesPanel.propTypes = {
   onSave: PropTypes.func.isRequired,
   canSave: PropTypes.bool.isRequired,
   onNodeUpdate: PropTypes.func.isRequired,
+  onNodeDelete: PropTypes.func.isRequired,
 };
 
 export default NodePropertiesPanel;
