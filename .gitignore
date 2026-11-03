@@ -22,5 +22,4 @@ Desktop.ini
 
 # Environment files
 .env.*.local
-config.bat
 node_modules
